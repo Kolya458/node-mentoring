@@ -16,7 +16,6 @@ export class UserService {
     }
 
     public createUser(req: Request, res: Response) {
-        console.log(req);
         const { login, password, age } = req.body;
         const newUser = new User(login, password, age);
         users.append(newUser);

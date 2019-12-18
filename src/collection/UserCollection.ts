@@ -30,7 +30,6 @@ export class UsersCollection {
                 throw new Error('user doen\'t exist');
             }
         } catch (e) {
-            console.log(e);
             return e;
         }
     }
@@ -44,7 +43,6 @@ export class UsersCollection {
                 throw new Error('user doen\'t exist');
             }
         } catch (e) {
-            console.log(e);
             return e;
         }
     }
