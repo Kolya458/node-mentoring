@@ -18,5 +18,6 @@ export class UserController {
             .get(this.userService.getUserById)
             .delete(this.userService.deleteUser)
             .put(this.userService.updateUser);
+        this.app.route('/get-autocomplete').get(this.userService.getAutoSuggestUsers);
     }
 }

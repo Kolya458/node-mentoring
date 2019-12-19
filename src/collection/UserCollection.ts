@@ -7,21 +7,21 @@ export class UsersCollection {
         this.collection = collection;
     }
 
-    findById(id:string): User | undefined {
+    public findById(id:string): User | undefined {
         const user: User | undefined = this.collection.find(el => el.getId() === id);
         return user;
     }
 
-    findAll(): User[] {
+    public findAll(): User[] {
         const existingUsers = this.collection.filter(el => el.getStatus() === false);
         return existingUsers;
     }
 
-    append(user: User): void {
+    public append(user: User): void {
         this.collection.push(user);
     }
 
-    delete(id: string): Error | undefined {
+    public delete(id: string): Error | undefined {
         const user = this.findById(id);
         try {
             if (user) {
@@ -34,7 +34,7 @@ export class UsersCollection {
         }
     }
 
-    update(id:string, login:string, password: string, age:number): Error | undefined {
+    public update(id:string, login:string, password: string, age:number): Error | undefined {
         const user = this.findById(id);
         try {
             if (user) {
@@ -45,6 +45,11 @@ export class UsersCollection {
         } catch (e) {
             return e;
         }
+    }
+
+    public findBySubstr(substr: string): User[] {
+        const smallSubstr = substr.toLowerCase();
+        return this.collection.filter(el => el.getLogin().toLowerCase().includes(smallSubstr));
     }
 }
 

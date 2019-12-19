@@ -16,21 +16,25 @@ export class User {
         User.count++;
     }
 
-    getId(): string {
+    public getId(): string {
         return this.id;
     }
 
-    getStatus(): boolean {
+    public getStatus(): boolean {
         return this.isDeleted;
     }
 
-    update(login: string, password: string, age:number) {
+    public getLogin(): string {
+        return this.login;
+    }
+
+    public update(login: string, password: string, age:number) {
         this.login = login || this.login;
         this.password = password || this.password;
         this.age = age || this.age;
     }
 
-    delete() {
+    public delete() {
         this.isDeleted = true;
     }
 }

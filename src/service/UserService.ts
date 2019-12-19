@@ -42,4 +42,10 @@ export class UserService {
             res.json({ status: 'success' });
         }
     }
+
+    public getAutoSuggestUsers(req: Request, res: Response) {
+        const query: string = req.body.query;
+        const result: User[] = users.findBySubstr(query);
+        res.json(result);
+    }
 }
