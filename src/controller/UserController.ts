@@ -1,4 +1,5 @@
 import { UserService } from '../service/UserService';
+import { validate } from '../validation/validation';
 
 export class UserController {
     private userService: UserService;
@@ -12,12 +13,12 @@ export class UserController {
 
     public routes() {
         this.app.route('/').get(this.userService.getAllUsers);
-        this.app.route('/append-user').post(this.userService.createUser);
+        this.app.route('/append-user').post(validate('user-schema'), this.userService.createUser);
         this.app
             .route('/user/:id')
             .get(this.userService.getUserById)
             .delete(this.userService.deleteUser)
-            .put(this.userService.updateUser);
+            .put(validate('user-schema'), this.userService.updateUser);
         this.app.route('/get-autocomplete').get(this.userService.getAutoSuggestUsers);
     }
 }
