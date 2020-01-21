@@ -1,6 +1,6 @@
-export class User {
-    static count: number = 0;
+const uuidv1 = require('uuid/v1');
 
+export class User {
     private id: string;
     private login: string;
     private password: string;
@@ -8,12 +8,11 @@ export class User {
     private isDeleted: boolean;
 
     constructor(login:string, password:string, age:number) {
-        this.id = User.count.toString();
+        this.id = uuidv1();
         this.login = login;
         this.password = password;
         this.age = age;
         this.isDeleted = false;
-        User.count++;
     }
 
     public getId(): string {

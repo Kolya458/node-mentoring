@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Request, Response } from 'express';
-import { users } from '../collection/UserCollection';
-import { User } from '../entity/User';
+import { users } from '../../collections/UserCollection';
+import { User } from '../../models/User';
 
 export class UserService {
     public getAllUsers(req: Request, res: Response) {
@@ -44,8 +44,9 @@ export class UserService {
     }
 
     public getAutoSuggestUsers(req: Request, res: Response) {
-        const query: string = req.body.query;
-        const result: User[] = users.findBySubstr(query);
+        const login: string = req.body.login;
+        const limit: number = req.body.limit;
+        const result: User[] = users.findBySubstr(login, limit);
         res.json(result);
     }
 }

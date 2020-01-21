@@ -1,4 +1,4 @@
-import { User } from '../entity/User';
+import { User } from '../models/User';
 
 export class UsersCollection {
     private collection: User[];
@@ -47,9 +47,11 @@ export class UsersCollection {
         }
     }
 
-    public findBySubstr(substr: string): User[] {
+    public findBySubstr(substr: string, limit: number): User[] {
         const smallSubstr = substr.toLowerCase();
-        return this.collection.filter(el => el.getLogin().toLowerCase().includes(smallSubstr));
+        const matches = this.collection.filter(el => el.getLogin().toLowerCase().includes(smallSubstr));
+        matches.length = limit;
+        return matches;
     }
 }
 

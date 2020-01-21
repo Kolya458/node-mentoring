@@ -1,17 +1,25 @@
-import express from 'express';
-import { UserController } from './controller/UserController';
+import express, { Router } from 'express';
+import UserRouter from './resources/users/routes';
 class App {
-    public app: any;
-    public userController: UserController
+    public app: express.Application;
 
     constructor() {
         this.app = express();
-        this._setConfig();
-        this.userController = new UserController(this.app);
+        this.middleware();
+        this.routes();
     }
 
-    private _setConfig() {
+    private middleware(): void {
         this.app.use(express.json());
+    }
+
+    private routes(): void {
+        const router: Router = Router();
+        router.get('/', (req, res) => {
+            res.send('This is simple REST API');
+        });
+        this.app.use('/', router);
+        this.app.use('/api/users', UserRouter);
     }
 }
 

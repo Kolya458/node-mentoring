@@ -1,13 +1,13 @@
 import Ajv from 'ajv';
 // eslint-disable-next-line no-unused-vars
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import userSchema from './schema/userSchema';
 
 const ajv = new Ajv({ allErrors: true, removeAdditional: 'all' });
 ajv.addSchema(userSchema, 'user-schema');
 
 const errorResponse: Function = (schemaErrors: []): object => {
-    const errors = schemaErrors.map((err: any) => {
+    const errors = schemaErrors.map((err: Ajv.ErrorObject) => {
         return {
             path: err.dataPath,
             message: err.message
@@ -19,8 +19,8 @@ const errorResponse: Function = (schemaErrors: []): object => {
     };
 };
 
-export const validate = (schemaName: string): Function => {
-    return (req: Request, res: Response, next: Function) => {
+export const validate = (schemaName: string) => {
+    return (req: Request, res: Response, next: NextFunction): void => {
         const isValid: boolean | PromiseLike<any> = ajv.validate(schemaName, req.body);
         if (isValid) {
             // eslint-disable-next-line callback-return
