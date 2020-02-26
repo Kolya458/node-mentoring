@@ -6,8 +6,8 @@ import userSchema from './schema/userSchema';
 const ajv = new Ajv({ allErrors: true, removeAdditional: 'all' });
 ajv.addSchema(userSchema, 'user-schema');
 
-const errorResponse: Function = (schemaErrors: []): object => {
-    const errors = schemaErrors.map((err: Ajv.ErrorObject) => {
+const errorResponse = (schemaErrors: Ajv.ErrorObject[] | null | undefined) => {
+    const errors = schemaErrors?.map((err: Ajv.ErrorObject) => {
         return {
             path: err.dataPath,
             message: err.message
@@ -20,10 +20,9 @@ const errorResponse: Function = (schemaErrors: []): object => {
 };
 
 export const validate = (schemaName: string) => {
-    return (req: Request, res: Response, next: NextFunction): void => {
-        const isValid: boolean | PromiseLike<any> = ajv.validate(schemaName, req.body);
+    return (req: Request, res: Response, next: NextFunction) => {
+        const isValid = ajv.validate(schemaName, req.body);
         if (isValid) {
-            // eslint-disable-next-line callback-return
             next();
         } else {
             res.status(400).json(errorResponse(ajv.errors));

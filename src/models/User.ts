@@ -28,9 +28,9 @@ export class User {
     }
 
     public update(login: string, password: string, age:number) {
-        this.login = login || this.login;
-        this.password = password || this.password;
-        this.age = age || this.age;
+        this.login = login;
+        this.password = password;
+        this.age = age;
     }
 
     public delete() {

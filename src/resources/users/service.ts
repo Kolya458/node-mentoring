@@ -1,52 +1,44 @@
 /* eslint-disable no-unused-vars */
-import { Request, Response } from 'express';
 import { users } from '../../collections/UserCollection';
 import { User } from '../../models/User';
+import { UserInfo } from '../../types/UserInfo.interface';
+import { SuggestInfo } from '../../types/SuggestInfo.interface';
+import { HttpException } from '../../types/HttpException';
 
-export class UserService {
-    public getAllUsers(req: Request, res: Response) {
-        const allUsers: User[] = users.findAll();
-        res.json(allUsers);
-    }
+export const getAllUsers = () => {
+    return users.findAll();
+};
 
-    public getUserById(req: Request, res: Response) {
-        const id:string = req.params.id;
-        const user: User | undefined = users.findById(id);
-        res.json(user);
-    }
+export const getUserById = (id: string) => {
+    return users.findById(id);
+};
 
-    public createUser(req: Request, res: Response) {
-        const { login, password, age } = req.body;
-        const newUser = new User(login, password, age);
-        users.append(newUser);
-        res.json(newUser);
-    }
+export const createUser = (userDTO: UserInfo) => {
+    const { login, password, age } = userDTO;
+    const newUser = new User(login, password, age);
+    users.append(newUser);
+    return newUser;
+};
 
-    public deleteUser(req: Request, res: Response) {
-        const id:string = req.params.id;
-        const error: Error | undefined = users.delete(id);
-        if (error) {
-            res.status(422).json({ status: 'failed' });
-        } else {
-            res.json({ status: 'success' });
-        }
-    }
+export const deleteUser = (id: string) => {
+    const error: Error | undefined = users.delete(id);
+    if (error) {
+        throw new HttpException(424, 'failed');
+    };
 
-    public updateUser(req: Request, res: Response) {
-        const id:string = req.params.id;
-        const { login, password, age } = req.body;
-        const error: Error | undefined = users.update(id, login, password, age);
-        if (error) {
-            res.status(422).json({ status: 'failed' });
-        } else {
-            res.json({ status: 'success' });
-        }
-    }
+    return { status: 'success' };
+};
 
-    public getAutoSuggestUsers(req: Request, res: Response) {
-        const login: string = req.body.login;
-        const limit: number = req.body.limit;
-        const result: User[] = users.findBySubstr(login, limit);
-        res.json(result);
+export const updateUser = (id: string, userDTO: UserInfo) => {
+    const { login, password, age } = userDTO;
+    const error: Error | undefined = users.update(id, login, password, age);
+    if (error) {
+        throw new HttpException(424, 'failed');
     }
-}
+    return { status: 'success' };
+};
+
+export const getAutoSuggestUsers = (suggestInfo: SuggestInfo) => {
+    const { login, limit } = suggestInfo;
+    return users.findBySubstr(login, limit);
+};

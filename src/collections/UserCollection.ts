@@ -40,7 +40,7 @@ export class UsersCollection {
             if (user) {
                 user.update(login, password, age);
             } else {
-                throw new Error('user doen\'t exist');
+                return new Error('user doen\'t exist');
             }
         } catch (e) {
             return e;

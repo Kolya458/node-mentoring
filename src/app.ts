@@ -1,26 +1,25 @@
 import express, { Router } from 'express';
 import UserRouter from './resources/users/routes';
-class App {
-    public app: express.Application;
+// eslint-disable-next-line no-unused-vars
+import { HttpException } from './types/HttpException';
 
-    constructor() {
-        this.app = express();
-        this.middleware();
-        this.routes();
-    }
+const app = express();
+const router = Router();
 
-    private middleware(): void {
-        this.app.use(express.json());
-    }
+app.use(express.json());
 
-    private routes(): void {
-        const router: Router = Router();
-        router.get('/', (req, res) => {
-            res.send('This is simple REST API');
-        });
-        this.app.use('/', router);
-        this.app.use('/api/users', UserRouter);
-    }
-}
+app.use('/', router);
+app.use('/api/users', UserRouter);
 
-export default new App().app;
+
+router.get('/', (req, res) => {
+    res.send('This is simple REST API');
+});
+
+app.use((err: HttpException, req: express.Request, res: express.Response) => {
+    const status = err.status || 500;
+    const message = err.message || 'Something went wrong';
+    res.status(status).json(message);
+});
+
+export default app;
