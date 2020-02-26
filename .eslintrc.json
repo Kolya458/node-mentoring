@@ -64,7 +64,7 @@
             2,
             "functions"
         ],
-        "no-extra-semi": 2,
+        "no-extra-semi": 0,
         "no-func-assign": 2,
         "no-inner-declarations": 2,
         "no-invalid-regexp": 2,
@@ -177,7 +177,7 @@
         "no-undef": 2,
         "no-unused-vars": 2,
         // Node.js
-        "callback-return": 2,
+        "callback-return": 0,
         "no-mixed-requires": 2,
         "no-path-concat": 2,
         "no-sync": 2,
