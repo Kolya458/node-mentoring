@@ -1,4 +1,5 @@
 import { User } from '../models/User';
+import { UserException } from '../types/UserException';
 
 export class UsersCollection {
     private collection: User[];
@@ -21,29 +22,21 @@ export class UsersCollection {
         this.collection.push(user);
     }
 
-    public delete(id: string): Error | undefined {
+    public delete(id: string) {
         const user = this.findById(id);
-        try {
-            if (user) {
-                user.delete();
-            } else {
-                throw new Error('user doen\'t exist');
-            }
-        } catch (e) {
-            return e;
+        if (user) {
+            user.delete();
+        } else {
+            throw new UserException(400, 'can\'t delete');
         }
     }
 
-    public update(id:string, login:string, password: string, age:number): Error | undefined {
+    public update(id:string, login:string, password: string, age:number) {
         const user = this.findById(id);
-        try {
-            if (user) {
-                user.update(login, password, age);
-            } else {
-                return new Error('user doen\'t exist');
-            }
-        } catch (e) {
-            return e;
+        if (user) {
+            user.update(login, password, age);
+        } else {
+            throw new UserException(400, 'can\'t update');
         }
     }
 

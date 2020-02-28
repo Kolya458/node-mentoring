@@ -4,8 +4,6 @@ import * as UserService from './service';
 import { validate } from '../../validation/validation';
 import { UserInfo } from '../../types/UserInfo.interface';
 import { SuggestInfo } from '../../types/SuggestInfo.interface';
-import { HttpException } from '../../types/HttpException';
-
 
 const userRouter = express.Router();
 userRouter.get('/', (req: express.Request, res: express.Response) => {
