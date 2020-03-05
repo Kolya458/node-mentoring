@@ -1,10 +1,15 @@
 import express, { Router } from 'express';
 import UserRouter from './resources/users/routes';
+
+import dbLoader from './loaders/dbLoader';
+
 // eslint-disable-next-line no-unused-vars
 import { UserException } from './types/UserException';
 
 const app = express();
 const router = Router();
+
+dbLoader();
 
 app.use(express.json());
 
