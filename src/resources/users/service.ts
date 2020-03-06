@@ -1,9 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { Users } from '../../database/models/initUser';
+import { Users } from '../../database/models/User';
 import { Op } from 'sequelize';
 import { UserInfo } from '../../types/UserInfo.interface';
 import { SuggestInfo } from '../../types/SuggestInfo.interface';
-import { UserException } from '../../types/UserException';
 import { IUser } from '../../types/User.interface';
 
 export const getAllUsers = async () => {
@@ -19,44 +18,42 @@ export const getUserById = async (id: string) => {
     return user || {};
 };
 
-export const createUser = async (userDTO: UserInfo) => {
-    const { login } = userDTO;
+export const createUser = async (user: UserInfo) => {
+    const { login } = user;
     const existedUser = await findUserByLogin(login);
     if (existedUser) {
-        throw new UserException(400, 'user already exists');
+        throw new Error('user already exists');
     }
-    const newUser = await Users.create(userDTO, {
+    const newUser = await Users.create(user, {
         fields: ['login', 'password', 'age']
     });
     return newUser.get({ plain: true });
 };
 
 export const deleteUser = async (id: string) => {
-    const userToDelete = await Users.findOne({
+    const destroyedUser = await Users.destroy({
         where: { id }
+    }).then(countOfDestroyed => {
+        if (countOfDestroyed === 0) {
+            throw new Error('user doen\'t exist');
+        }
     });
-    if (!userToDelete) {
-        throw new UserException(400, 'user doen\'t exist');
-    }
-    await Users.destroy({
-        where: { id }
-    });
-    return getAllUsers();
+    return { status: 'success' };
 };
 
-export const updateUser = async (userDTO: IUser) => {
-    const { login, id } = userDTO;
-    const user = await findUserByLogin(login);
-    if (user && (user.get({ plain: true }) as IUser).id !== id) {
-        throw new UserException(400, 'User with this login already exists');
+export const updateUser = async (user: IUser) => {
+    const { login, id } = user;
+    const currentUser = await findUserByLogin(login);
+    if (currentUser && (currentUser.get({ plain: true }) as IUser).id !== id) {
+        throw new Error('User with this login already exists');
     }
-    const [, updatedUsers] = await Users.update(userDTO, {
+    const [, updatedUsers] = await Users.update(user, {
         fields: ['login', 'password', 'age'],
         where: { id },
         returning: true
     });
     if (!updatedUsers.length) {
-        throw new UserException(400, 'there is no user');
+        throw new Error('there is no user');
     }
     return updatedUsers[0].get({ plain: true });
 };

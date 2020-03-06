@@ -1,12 +1,9 @@
 import dotenv from 'dotenv';
 
 const dbConfig  = require('./database');
-
-dotenv.config({ path: './src/config/.env' });
+dotenv.config();
 
 export default {
-    server: {
-        port: process.env.PORT || 5000
-    },
-    db: dbConfig.development
+    port: dbConfig.development.port,
+    dbUrl: dbConfig.development.url
 };

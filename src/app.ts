@@ -3,9 +3,6 @@ import UserRouter from './resources/users/routes';
 
 import dbLoader from './loaders/dbLoader';
 
-// eslint-disable-next-line no-unused-vars
-import { UserException } from './types/UserException';
-
 const app = express();
 const router = Router();
 
@@ -22,8 +19,8 @@ router.get('/', (req, res) => {
 });
 
 // eslint-disable-next-line no-unused-vars
-app.use((err: UserException, req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const status = err.status || 500;
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const status = res.statusCode;
     const message = err.message || 'Something went wrong';
     res.status(status).json(message);
 });

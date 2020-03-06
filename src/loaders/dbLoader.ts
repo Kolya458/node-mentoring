@@ -3,7 +3,7 @@ import config from '../config';
 import initModels from '../database/models';
 
 export default async () => {
-    const sequelize = new Sequelize(config.db.url);
+    const sequelize = new Sequelize(config.dbUrl, { dialect: 'postgres' });
 
     sequelize
         .authenticate()
