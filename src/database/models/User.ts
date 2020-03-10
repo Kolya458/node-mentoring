@@ -8,11 +8,29 @@ export default (sequelize: Sequelize.Sequelize) => {
         id: {
             type: Sequelize.DataTypes.UUID,
             defaultValue: v4(),
-            primaryKey: true
+            primaryKey: true,
+            unique: true,
+            allowNull: false
         },
-        login: Sequelize.DataTypes.STRING,
-        password: Sequelize.DataTypes.STRING,
-        age: Sequelize.DataTypes.SMALLINT
+        login: {
+            type: Sequelize.DataTypes.STRING,
+            allowNull: false
+        },
+        password: {
+            type: Sequelize.DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                is: /^(?=.*[a-zA-Z])(?=.*[0-9])/i
+            }
+        },
+        age: {
+            type: Sequelize.DataTypes.SMALLINT,
+            allowNull: false,
+            validate: {
+                min: 4,
+                max: 130
+            }
+        }
     }, { sequelize, timestamps: false });
     return User;
 };
