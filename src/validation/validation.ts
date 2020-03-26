@@ -2,9 +2,11 @@ import Ajv from 'ajv';
 // eslint-disable-next-line no-unused-vars
 import { Request, Response, NextFunction } from 'express';
 import userSchema from './schema/userSchema';
+import groupSchema from './schema/groupSchema';
 
 const ajv = new Ajv({ allErrors: true, removeAdditional: 'all' });
 ajv.addSchema(userSchema, 'user-schema');
+ajv.addSchema(groupSchema, 'group-schema');
 
 const errorResponse = (schemaErrors: Ajv.ErrorObject[] | null | undefined) => {
     const errors = schemaErrors?.map((err: Ajv.ErrorObject) => {

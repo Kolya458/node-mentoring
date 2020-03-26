@@ -14,6 +14,7 @@ export default (sequelize: Sequelize.Sequelize) => {
         },
         login: {
             type: Sequelize.DataTypes.STRING,
+            unique: true,
             allowNull: false
         },
         password: {
@@ -31,6 +32,6 @@ export default (sequelize: Sequelize.Sequelize) => {
                 max: 130
             }
         }
-    }, { sequelize, timestamps: false });
+    }, { sequelize, modelName: 'Users', timestamps: false });
     return User;
 };

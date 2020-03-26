@@ -2,7 +2,7 @@ module.exports = {
     up: queryInterface => {
         return queryInterface.sequelize.query(
             `CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-              DROP TABLE IF EXISTS "User";
+              DROP TABLE IF EXISTS "Users" CASCADE;
               CREATE TABLE "Users"(
                 id UUID DEFAULT uuid_generate_v4(),
                 login VARCHAR(50) NOT NULL UNIQUE,
