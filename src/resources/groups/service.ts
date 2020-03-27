@@ -3,7 +3,9 @@ import { Groups } from '../../database/models/Group';
 import EntitiesService from '../common/entityService';
 import { Users } from '../../database/models/User';
 import { db } from '../../loaders/dbLoader';
+import ServiceLogger from '../../logger/service.decorator';
 
+@ServiceLogger
 class GroupService extends EntitiesService {
     constructor() {
         super(Groups);

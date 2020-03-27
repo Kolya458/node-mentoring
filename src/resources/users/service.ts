@@ -2,9 +2,10 @@
 import { Users } from '../../database/models/User';
 import { Op } from 'sequelize';
 import { SuggestInfo } from '../../types/SuggestInfo.interface';
-import { IUser } from '../../types/User.interface';
 import EntitiesService from '../common/entityService';
+import ServiceLogger from '../../logger/service.decorator';
 
+@ServiceLogger
 class UsersService extends EntitiesService {
     constructor() {
         super(Users);

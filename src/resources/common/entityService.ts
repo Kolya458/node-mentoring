@@ -1,9 +1,10 @@
 // eslint-disable-next-line no-unused-vars
 import Sequelize, { Model } from 'sequelize';
+import ServiceLogger from '../../logger/service.decorator';
 
 type ModelStatic = typeof Model & { new(values?: object, options?: Sequelize.BuildOptions): Model }
 
-
+@ServiceLogger
 export default abstract class EntitiesService {
   private model: ModelStatic;
 
