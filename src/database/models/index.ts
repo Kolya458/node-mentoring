@@ -1,6 +1,8 @@
 import User from './User';
+import Group from './Group';
 
 export default {
-    User
+    User,
+    Group
 };
 

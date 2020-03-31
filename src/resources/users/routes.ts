@@ -1,22 +1,21 @@
 /* eslint-disable no-unused-vars */
 import express from 'express';
-import * as UserService from './service';
+import UserService from './service';
 import { validate } from '../../validation/validation';
-import { UserInfo } from '../../types/UserInfo.interface';
 import { SuggestInfo } from '../../types/SuggestInfo.interface';
 import { IUser } from '../../types/User.interface';
 
 const userRouter = express.Router();
 
 userRouter.get('/', async (req: express.Request, res: express.Response) => {
-    const allUsers = await UserService.getAllUsers();
+    const allUsers = await UserService.findAll();
     return res.json(allUsers);
 });
 
 userRouter.post('/', validate('user-schema'), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const userDTO = req.body as UserInfo;
+    const userDTO = req.body as Omit<IUser, 'id'>;
     try {
-        const newUser = await UserService.createUser(userDTO);
+        const newUser = await UserService.create(userDTO);
         return res.json(newUser);
     } catch (e) {
         next(e);
@@ -32,14 +31,14 @@ userRouter
     .route('/:id')
     .get(async (req: express.Request, res: express.Response) => {
         const { id } = req.params;
-        const user = await UserService.getUserById(id);
+        const user = await UserService.findById(id);
         return res.json(user);
     })
     .delete(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const { id } = req.params;
         try {
-            const allUsers = await UserService.deleteUser(id);
-            return res.json(allUsers);
+            const result = await UserService.delete(id);
+            return res.json(result);
         } catch (e) {
             next(e);
         }
@@ -49,7 +48,7 @@ userRouter
         const userDTO = req.body as IUser;
         userDTO.id = id;
         try {
-            const updatedUser = await UserService.updateUser(userDTO);
+            const updatedUser = await UserService.update(userDTO);
             return res.json(updatedUser);
         } catch (e) {
             next(e);
