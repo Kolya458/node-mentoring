@@ -1,7 +1,15 @@
 import Sequelize, { Model } from 'sequelize';
 import { v4 } from 'uuid';
+// eslint-disable-next-line no-unused-vars
+import { IUser } from '../../types/User.interface';
+const { genHash } = require('../util/genHash');
 
-export class Users extends Model {}
+export class Users extends Model implements IUser {
+    public id!: string;
+    public login!: string;
+    public password!: string;
+    public age!: number
+}
 
 export default (sequelize: Sequelize.Sequelize) => {
     const User = Users.init({
@@ -33,5 +41,10 @@ export default (sequelize: Sequelize.Sequelize) => {
             }
         }
     }, { sequelize, modelName: 'Users', timestamps: false });
+    Users.beforeSave(async (user: Users) => {
+        if (user.changed('password')) {
+            user.password = await genHash(user.password);
+        }
+    });
     return User;
 };

@@ -1,9 +1,10 @@
 import dotenv from 'dotenv';
-
-const dbConfig  = require('./database');
+const config = require('./database');
 dotenv.config();
 
 export default {
-    port: dbConfig.development.port,
-    dbUrl: dbConfig.development.url
+    port: config.development.port,
+    dbUrl: config.development.url,
+    jwtSecret: config.development.jwtSecret || 'shhh',
+    jwtLifetime: config.development.jwtLifetime
 };

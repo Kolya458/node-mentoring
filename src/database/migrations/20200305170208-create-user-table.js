@@ -6,7 +6,7 @@ module.exports = {
               CREATE TABLE "Users"(
                 id UUID DEFAULT uuid_generate_v4(),
                 login VARCHAR(50) NOT NULL UNIQUE,
-                password VARCHAR(50) NOT NULL,
+                password VARCHAR(100) NOT NULL,
                 age SMALLINT NOT NULL,
                 PRIMARY KEY(id)
               );`

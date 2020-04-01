@@ -2,6 +2,7 @@ import { Sequelize } from 'sequelize';
 import { loggers } from 'winston';
 import { Groups } from '../database/models/Group';
 import { Users }  from '../database/models/User';
+import { RefreshToken } from '../database/models/RefreshToken';
 import config from '../config';
 import initModels from '../database/models';
 
@@ -18,6 +19,7 @@ export default async () => {
 
         Groups.belongsToMany(Users, { through: 'UserGroup', timestamps: false });
         Users.belongsToMany(Groups, { through: 'UserGroup', timestamps: false });
+        Users.hasMany(RefreshToken);
 
         sequelize
             .authenticate()

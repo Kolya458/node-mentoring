@@ -4,15 +4,17 @@ import UserService from './service';
 import { validate } from '../../validation/validation';
 import { SuggestInfo } from '../../types/SuggestInfo.interface';
 import { IUser } from '../../types/User.interface';
+import auth from '../auth/auth';
+import { RefreshToken } from '../../database/models/RefreshToken';
 
 const userRouter = express.Router();
 
-userRouter.get('/', async (req: express.Request, res: express.Response) => {
-    const allUsers = await UserService.findAll();
+userRouter.get('/', auth, async (req: express.Request, res: express.Response) => {
+    const allUsers = await UserService.findAll({ include: [RefreshToken] });
     return res.json(allUsers);
 });
 
-userRouter.post('/', validate('user-schema'), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+userRouter.post('/', auth, validate('user-schema'), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const userDTO = req.body as Omit<IUser, 'id'>;
     try {
         const newUser = await UserService.create(userDTO);
@@ -22,19 +24,19 @@ userRouter.post('/', validate('user-schema'), async (req: express.Request, res: 
     }
 });
 
-userRouter.get('/auto', async (req: express.Request, res: express.Response) => {
+userRouter.get('/auto', auth, async (req: express.Request, res: express.Response) => {
     const suggestDTO = req.body as SuggestInfo;
     const suggestions = await UserService.getAutoSuggestUsers(suggestDTO);
     res.json(suggestions);
 });
 userRouter
     .route('/:id')
-    .get(async (req: express.Request, res: express.Response) => {
+    .get(auth, async (req: express.Request, res: express.Response) => {
         const { id } = req.params;
         const user = await UserService.findById(id);
         return res.json(user);
     })
-    .delete(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    .delete(auth, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const { id } = req.params;
         try {
             const result = await UserService.delete(id);
@@ -43,7 +45,7 @@ userRouter
             next(e);
         }
     })
-    .put(validate('user-schema'), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    .put(auth, validate('user-schema'), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const { id } = req.params;
         const userDTO = req.body as IUser;
         userDTO.id = id;
