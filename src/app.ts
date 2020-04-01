@@ -1,4 +1,5 @@
 import express, { Router } from 'express';
+import cors from 'cors';
 import UserRouter from './resources/users/routes';
 import GroupRouter from './resources/groups/routes';
 import AuthRouter from './resources/auth/routes';
@@ -12,6 +13,7 @@ const router = Router();
 const logger = loggerLoader('info');
 dbLoader();
 
+app.use(cors());
 app.use(express.json());
 
 app.use('/', router);
