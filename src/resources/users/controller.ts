@@ -7,7 +7,7 @@ import { RefreshToken } from '../../database/models/RefreshToken';
 
 export const findAll = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
-        const allUsers = await UserService.findAll({ include: [RefreshToken] });
+        const allUsers = await UserService.findAll();
         return res.json(allUsers);
     } catch (e) {
         next(e);
