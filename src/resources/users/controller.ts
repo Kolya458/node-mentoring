@@ -3,7 +3,6 @@ import express from 'express';
 import UserService from './service';
 import { SuggestInfo } from '../../types/SuggestInfo.interface';
 import { IUser } from '../../types/User.interface';
-import { RefreshToken } from '../../database/models/RefreshToken';
 
 export const findAll = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
