@@ -1,0 +1,39 @@
+[
+    {
+      "id": "0",
+      "login": "admin",
+      "password": "admin",
+      "age": 33
+    },
+    {
+      "id": "1",
+      "login": "qwer",
+      "password": "qwer1",
+      "age": 32
+    },
+    {
+      "id": "2",
+      "login": "dsa",
+      "password": "dsa1",
+      "age": 23
+    },
+    {
+      "id": "3",
+      "login": "zxc",
+      "password": "zxc1",
+      "age": 14
+    },
+    {
+      "id": "4",
+      "login": "ivan",
+      "password": "ivan1",
+      "age": 100
+    },
+    {
+      "id": "5",
+      "login": "masha",
+      "password": "masha1",
+      "age": 25
+    }
+  ]
+  
